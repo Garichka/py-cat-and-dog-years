@@ -13,6 +13,7 @@ from app.main import get_human_age
         (27, 27, [2, 2]),
         (28, 28, [3, 2]),
         (100, 100, [21, 17]),
+        (1000, 1000, [246, 197]),
     ]
 )
 def test_get_human_age_valid(
@@ -22,11 +23,27 @@ def test_get_human_age_valid(
     assert get_human_age(cat_age, dog_age) == expected
 
 
-def test_get_human_age_invalid_values() -> None:
+@pytest.mark.parametrize(
+    "cat_age, dog_age",
+    [
+        (-1, 5),
+        (5, -1),
+        (-1, -1),
+    ]
+)
+def test_get_human_age_invalid_values(cat_age: int, dog_age: int) -> None:
     with pytest.raises(ValueError):
-        get_human_age(-1, 5)
+        get_human_age(cat_age, dog_age)
 
 
-def test_get_human_age_invalid_types() -> None:
+@pytest.mark.parametrize(
+    "cat_age, dog_age",
+    [
+        ("10", 10),
+        (10, "10"),
+        ("10", "10"),
+    ]
+)
+def test_get_human_age_invalid_types(cat_age: any, dog_age: any) -> None:
     with pytest.raises(TypeError):
-        get_human_age("10", 10)
+        get_human_age(cat_age, dog_age)
